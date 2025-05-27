@@ -19,6 +19,10 @@ registerWhen(
             if (currentBoss.isInvisible() && !invisStart) {
                 invisStart = { x: currentBoss.getX(), y: currentBoss.getY(), z: currentBoss.getZ() }
             }
+
+            else if (!currentBoss.isInvisible() && invisStart) {
+                invisStart = null
+            }
         }
         else if (currentBoss && currentBoss.isDead()) {
             currentBoss = null
@@ -38,11 +42,25 @@ registerWhen(
                 )
             }
 
-            RenderLib.drawEspBoxV2(
-                currentBoss.getRenderX(), currentBoss.getRenderY(), currentBoss.getRenderZ(),
-                currentBoss.getWidth() + 0.1, currentBoss.getHeight() + 0.1, currentBoss.getWidth() + 0.1,
-                0, 1, 1, 1, true, 2
-            )
+            if (settings.vampireESP) {
+                const colour = Player.asPlayerMP().distanceTo(currentBoss) <= 3 ? settings.bossCloseColour : settings.bossFarColour
+                const r = colour.getRed() / 255
+                const g = colour.getGreen() / 255
+                const b = colour.getBlue() / 255
+                const a = colour.getAlpha() / 255
+
+                RenderLib.drawEspBoxV2(
+                    currentBoss.getRenderX(), currentBoss.getRenderY(), currentBoss.getRenderZ(),
+                    currentBoss.getWidth() + 0.1, currentBoss.getHeight() + 0.1, currentBoss.getWidth() + 0.1,
+                    r, g, b, a, true, 2
+                )
+
+                RenderLib.drawInnerEspBoxV2(
+                    currentBoss.getRenderX(), currentBoss.getRenderY(), currentBoss.getRenderZ(),
+                    currentBoss.getWidth() + 0.1, currentBoss.getHeight() + 0.1, currentBoss.getWidth() + 0.1,
+                    r, g, b, a * 0.2, true
+                )
+            }
         }
     }),
     () => LocationUtils.getLocation() === "Stillgore Chteau" && (settings.mobESP || settings.vampireESP || settings.spectrePath)

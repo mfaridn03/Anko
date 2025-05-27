@@ -9,23 +9,31 @@ import {
 class Settings {
     constructor() {
         this.initialize(this);
-        this.addDependency("Boss Colour", "Vampire ESP");
+        this.addDependency("Boss Colour - Close", "Vampire ESP");
+        this.addDependency("Boss Colour - Far", "Vampire ESP");
         this.addDependency("Thrall Colour", "Mob ESP");
         this.addDependency("Fledgling Colour", "Mob ESP");
+        this.addDependency("Spectre Path", "Vampire ESP");
     }
 
     @SwitchProperty({
         name: "Vampire ESP",
-        description: "Draw boxes around vampire bosses",
+        description: "Draw boxes around vampire bosses, colour changing depending on whether it's in attack range or not",
         category: "Visual"
     })
     vampireESP = false;
 
     @ColorProperty({
-        name: "Boss Colour",
+        name: "Boss Colour - Close",
         category: "Visual",
     })
-    bossEspColour = new Color(1, 1, 1, 1);
+    bossCloseColour = new Color(1, 0, 0, 1);
+
+    @ColorProperty({
+        name: "Boss Colour - Far",
+        category: "Visual",
+    })
+    bossFarColour = new Color(0, 1, 0, 1);
 
     @SwitchProperty({
         name: "Mob ESP",
@@ -45,6 +53,13 @@ class Settings {
         category: "Visual",
     })
     fledglingColour = new Color(0, 1, 1, 1);
+
+    @SwitchProperty({
+        name: "Spectre Path",
+        description: "Draws a line following the path of the boss during spectre phase\nTODO: 2d/3d mode",
+        category: "Visual"
+    })
+    spectrePath = false;
 }
 
 export default new Settings;
