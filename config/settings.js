@@ -1,6 +1,7 @@
 import {
     @SwitchProperty,
     @ColorProperty,
+    @SelectorProperty,
     Color,
     @Vigilant
 } from "../../Vigilance"
@@ -54,12 +55,13 @@ class Settings {
     })
     fledglingColour = new Color(0, 1, 1, 1);
 
-    @SwitchProperty({
+    @SelectorProperty({
         name: "Spectre Path",
-        description: "Draws a line following the path of the boss during spectre phase\nTODO: 2d/3d mode",
-        category: "Visual"
+        description: "Draws a line following the path of the boss during spectre phase",
+        category: "Visual",
+        options: ["Off", "2D", "3D"]
     })
-    spectrePath = false;
+    spectrePath = 0;
 }
 
 export default new Settings;
