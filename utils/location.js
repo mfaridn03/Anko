@@ -1,4 +1,4 @@
-import { getScoreboard, getTablist, removeUnicode } from "./utils"
+import { getScoreboard, getTablist, removeUnicode } from "./interface"
 
 export default new class LocationUtils {
     constructor() {
