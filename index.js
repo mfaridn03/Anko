@@ -1,3 +1,5 @@
+import settings from "./config/settings"
+
 register("command", () => {
-    ChatLib.chat("Hello, world!")
-})
+    settings.openGUI()
+}).setName("anko")
