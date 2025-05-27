@@ -1,5 +1,5 @@
 import settings from "./config/settings"
-import "./test"
+import "./test/test"
 
 register("command", () => {
     settings.openGUI()

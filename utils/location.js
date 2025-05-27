@@ -17,7 +17,7 @@ export default new class LocationUtils {
             if (!sb) return
 
             for (let i = 0; i < sb.length; i++) {
-                if (sb[i].startsWith("⏣ ") || sb[i].startsWith("ф ")) {
+                if (sb[i].includes("⏣") || sb[i].includes("ф")) {
                     this.location = removeUnicode(sb[i]).trim()
                 }
             }
@@ -27,7 +27,7 @@ export default new class LocationUtils {
 
             for (let i = 0; i < tabList.length; i++) {
                 if (tabList[i].startsWith("Area: ")) {
-                    this.area = tabList[i].split("Area: ")[1].trim()
+                    this.area = tabList[i].substring(6).trim()
                 }
             }
         })
