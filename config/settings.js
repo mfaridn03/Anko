@@ -18,6 +18,13 @@ class Settings {
     }
 
     @SwitchProperty({
+        name: "Debug",
+        description: "debug stuff",
+        category: "Misc"
+    })
+    debug = false;
+
+    @SwitchProperty({
         name: "Vampire ESP",
         description: "Draw boxes around vampire bosses, colour changing depending on whether it's in attack range or not",
         category: "Visual"
@@ -62,6 +69,14 @@ class Settings {
         options: ["Off", "2D", "3D"]
     })
     spectrePath = 0;
+
+    @SwitchProperty({
+        name: "Ichor Helper",
+        description: "(Disabled) Draws a line on the ground from ichor to the boss and beyond",
+        category: "Visual"
+    })
+    ichorHelper = false;
+
 }
 
 export default new Settings;
