@@ -77,6 +77,19 @@ class Settings {
     })
     ichorHelper = false;
 
+    @SwitchProperty({
+        name: "Bundle Drop Message",
+        description: "Replaces the default bundle drop message to 'The One IV Bundle'",
+        category: "Misc",
+    })
+    bundleDropMessage = false;
+
+    @SwitchProperty({
+        name: "Copy RNG Drops",
+        description: "Copy bundle/fang/dye drops to clipboard",
+        category: "Misc",
+    })
+    copyRNGDrops = false;
 }
 
 export default new Settings;
