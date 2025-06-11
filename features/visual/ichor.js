@@ -1,6 +1,6 @@
-import settings from "../config/settings"
-import LocationUtils from "../utils/location"
-import { registerWhen } from "../utils/trigger"
+import settings from "../../config/settings"
+import LocationUtils from "../../utils/location"
+import { registerWhen } from "../../utils/trigger"
 
 let timerStand = null
 let spawnedByStand = null

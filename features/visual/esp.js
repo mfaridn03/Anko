@@ -1,8 +1,8 @@
-import settings from "../config/settings"
-import LocationUtils from "../utils/location"
-import { registerWhen } from "../utils/trigger"
-import { drawLines } from "../utils/render"
-import RenderLib from "../../RenderLibV2J"
+import settings from "../../config/settings"
+import LocationUtils from "../../utils/location"
+import { registerWhen } from "../../utils/trigger"
+import { drawLines } from "../../utils/render"
+import RenderLib from "../../../RenderLibV2J"
 
 const EntityOtherPlayerMP = Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")
 let currentBoss = null
