@@ -86,10 +86,17 @@ class Settings {
 
     @SwitchProperty({
         name: "Copy RNG Drops",
-        description: "Copy bundle/fang/dye drops to clipboard",
+        description: "Copy burger/bundle/fang/dye drops to clipboard",
         category: "Misc",
     })
     copyRNGDrops = false;
+
+    @SwitchProperty({
+        name: "RNG Drop Title",
+        description: "Show a title when you get a burger/bundle/fang/dye drop",
+        category: "Misc",
+    })
+    rngDropTitle = false;
 
     @SwitchProperty({
         name: "Announce Spawn",
