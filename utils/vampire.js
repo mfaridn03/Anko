@@ -13,13 +13,12 @@ export default new class Vampire {
         this.maniaCd = false
 
         register("worldLoad", () => {
-            this.timerStand = null
-            this.startTime = null
-            this.spawnedByStand = null
-            this.entity = null
-            this.mania = 0
-            this.ticks = 2
+            this.reset()
         })
+
+        register("chat", (event) => {
+            this.reset()
+        }).setCriteria("§r§aYour Slayer Quest has been cancelled!§r")
 
         register(net.minecraftforge.event.entity.EntityJoinWorldEvent, (event) => {
             if (LocationUtils.getLocation() !== "Stillgore Chteau") return
@@ -69,11 +68,7 @@ export default new class Vampire {
                         break
                 }
 
-                this.entity = null
-                this.spawnedByStand = null
-                this.startTime = null
-                this.mania = 0
-                this.ticks = 2
+                this.reset()
             }
         })
 
@@ -98,6 +93,16 @@ export default new class Vampire {
                 }, 1000 * 5)
             }
         })
+    }
+
+    reset() {
+        this.timerStand = null
+        this.startTime = null
+        this.spawnedByStand = null
+        this.entity = null
+        this.mania = 0
+        this.ticks = 2
+        this.maniaCd = false
     }
 
     location(ent, render = false, round = false) {
