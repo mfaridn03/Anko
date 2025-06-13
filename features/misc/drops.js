@@ -18,11 +18,32 @@ register("chat", (rarity, drop, mf, event) => {
     }
 
     if (settings.copyRNGDrops) {
-        const selection = new StringSelection(ChatLib.removeFormatting(message))
+        const selection = new StringSelection(ChatLib.removeFormatting(message) + (rarity === "CRAZY" ? "[Lootshare]" : ""))
         const clipboard = ToolKit.getDefaultToolkit().getSystemClipboard()
         clipboard.setContents(selection, null)
-        ChatLib.chat("§7Copied to clipboard!")
+        ChatLib.chat("§8Copied to clipboard!")
     }
 
-}).setCriteria(/^(VERY|CRAZY) RARE DROP\! \((Enchanted Book Bundle|Unfanged Vampire Part)\) \(\+(\d+)% ✯ Magic Find\)$/)
+}).setCriteria(/^(VERY|CRAZY) RARE DROP\! \((Enchanted Book Bundle|Unfanged Vampire Part|McGrubber's Burger)\) \(\+(\d+)% ✯ Magic Find\)$/)
 // ^§r§9§lVERY RARE DROP! §r§7(§r§f§r§6Enchanted Book Bundle§r§7) §r§b(+41% §r§b✯ Magic Find§r§b)§r
+
+register("chat", (player, dyeName, end, event) => {
+    if (!settings.copyRNGDrops) return
+
+    let name = player
+    if (player.includes("] "))
+        name = player.split(" ")[1]
+
+    if (name === Player.getName()) {
+        const selection = new StringSelection(`WOW! ${player} found ${dyeName} Dye${end}`)
+        const clipboard = ToolKit.getDefaultToolkit().getSystemClipboard()
+        clipboard.setContents(selection, null)
+        ChatLib.chat("§8Copied to clipboard!")
+    }
+
+}).setCriteria(/^WOW\! (.+) found (.+) Dye(.+\!|\!)/)
+
+// TODO: rng drop title
+// WOW! [VIP] derankerrrr found Sangria Dye #44!
+// ^WOW\! (.+) found (.+) Dye(.+\!|\!)
+
