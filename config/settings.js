@@ -90,6 +90,34 @@ class Settings {
         category: "Misc",
     })
     copyRNGDrops = false;
+
+    @SwitchProperty({
+        name: "Announce Spawn",
+        description: "Say in p chat when you spawn the boss",
+        category: "Party",
+        subcategory: "Announcement"
+    })
+    announceSpawn = false;
+    // TODO: location names with coords range (e.g. Basement)
+
+    @SwitchProperty({
+        name: "Mania Phase",
+        description: "Say when you start mania phases",
+        category: "Party",
+        subcategory: "Announcement"
+    })
+    announceMania = false;
+
+    @SelectorProperty({
+        name: "Boss Death",
+        description: "Announce boss death and/or time to kill",
+        category: "Party",
+        subcategory: "Announcement",
+        options: ["Off", "Time", "Time + Death"]
+    })
+    announceDeath = 0;
+
+    // TODO: craft melons/hemoglass reminder
 }
 
 export default new Settings;
