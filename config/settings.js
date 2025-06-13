@@ -26,7 +26,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Vampire ESP",
-        description: "Draw boxes around vampire bosses, colour changing depending on whether it's in attack range or not",
+        description: "Draw boxes around your last attacked vampire bosses, colour changing depending on whether it's in attack range or not",
         category: "Visual"
     })
     vampireESP = false;
@@ -45,7 +45,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Mob ESP",
-        description: "Draw boxes around Thralls and Fledglings",
+        description: "(TODO) Draw boxes around Thralls and Fledglings",
         category: "Visual"
     })
     mobESP = false;
@@ -72,7 +72,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Ichor Helper",
-        description: "(Disabled) Draws a line on the ground from ichor to the boss and beyond",
+        description: "(TODO) Draws a line on the ground from ichor to the boss and beyond",
         category: "Visual"
     })
     ichorHelper = false;
@@ -110,14 +110,14 @@ class Settings {
 
     @SelectorProperty({
         name: "Boss Death",
-        description: "Announce boss death and/or time to kill",
+        description: "Announce boss time to kill",
         category: "Party",
         subcategory: "Announcement",
-        options: ["Off", "Time", "Time + Death"]
+        options: ["Off", "Time", "Time + Ticks"]
     })
     announceDeath = 0;
 
-    // TODO: craft melons/hemoglass reminder
+    // TODO: craft melons/hemoglass reminder, !boss party chat command, kills status command, stats command, announce when close to spawning
 }
 
 export default new Settings;

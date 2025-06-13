@@ -52,16 +52,15 @@ export default new class Vampire {
 
         register("entityDeath", (entity) => {
             if (this.entity && entity.getUUID().equals(this.entity.getUUID())) {
+                const time = Math.round((Date.now() - this.startTime) / 1000) + 0.01
 
                 switch (settings.announceDeath) {
                     case 1: // Time
-                        const time = Math.round((Date.now() - this.startTime) / 1000)
-                        ChatLib.command(`pc Boss took ${time.toFixed(2) + 0.01} seconds (${this.ticks} ticks) to kill`)
+                        ChatLib.command(`pc Boss took ${time.toFixed(2)}s to kill`)
                         break
 
-                    case 2: // Time + Death
-                        const deathMessage = `Boss Killed in ${Math.round((Date.now() - this.startTime) / 1000)} seconds`
-                        ChatLib.command(`pc ${deathMessage}`)
+                    case 2: // Time + Ticks
+                        ChatLib.command(`pc Boss took ${time.toFixed(2)}s (${this.ticks} ticks) to kill`)
                         break
 
                     default:
@@ -79,7 +78,7 @@ export default new class Vampire {
         }).setFilteredClass(net.minecraft.network.play.server.S32PacketConfirmTransaction)
 
         register("tick", () => {
-            if (!this.timerStand) return
+            if (!this.spawnedByStand || !this.timerStand) return
             // mania stuff
             if (ChatLib.removeFormatting(this.timerStand.getName()).includes("MANIA 25.") && !this.maniaCd) {
                 this.maniaCd = true
