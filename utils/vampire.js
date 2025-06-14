@@ -1,5 +1,8 @@
+import settings from "../config/settings"
 import modSettings from "../config/settings"
+import { getScoreboard, removeUnicode } from "./interface"
 import LocationUtils from "./location"
+import { registerWhen } from "./trigger"
 
 export default new class Vampire {
     constructor() {
@@ -9,6 +12,7 @@ export default new class Vampire {
         this.entity = null
         this.mania = 0
         this.ticks = 2
+        this.fighting = false
 
         this.maniaCd = false
 
@@ -16,17 +20,12 @@ export default new class Vampire {
             this.reset()
         })
 
-        register("chat", (event) => {
-            this.reset()
-            ChatLib.chat("")
-        }).setCriteria("§r§aYour Slayer Quest has been cancelled!§r")
-
         register(net.minecraftforge.event.entity.EntityJoinWorldEvent, (event) => {
             if (LocationUtils.getLocation() !== "Stillgore Chteau") return
 
             const e = new Entity(event.entity)
             Client.scheduleTask(2, () => {
-                if (e.getName().removeFormatting().includes("03:59") && !this.timerStand) {
+                if (e.getName().removeFormatting().includes("03:59") && !this.timerStand && this.fighting) {
                     // can trigger from other people's bosses
                     // stop triggering if spawnedByStand is set, last timer stand spawn is almost always the one before the
                     // correct spawnedby stand (hopefully)
@@ -79,20 +78,54 @@ export default new class Vampire {
         }).setFilteredClass(net.minecraft.network.play.server.S32PacketConfirmTransaction)
 
         register("tick", () => {
-            if (!this.spawnedByStand || !this.timerStand) return
-            // mania stuff
-            if (ChatLib.removeFormatting(this.timerStand.getName()).includes("MANIA 25.") && !this.maniaCd) {
-                this.maniaCd = true
-                this.mania++
+            if (this.spawnedByStand && this.timerStand) {
+                // mania stuff
+                if (ChatLib.removeFormatting(this.timerStand.getName()).includes("MANIA 25.") && !this.maniaCd) {
+                    this.maniaCd = true
+                    this.mania++
 
-                if (modSettings.announceMania)
-                    ChatLib.command(`pc Mania Phase ${this.mania} started`)
+                    if (modSettings.announceMania)
+                        ChatLib.command(`pc Mania Phase ${this.mania} started`)
 
-                setTimeout(() => {
-                    this.maniaCd = false
-                }, 1000 * 5)
+                    setTimeout(() => {
+                        this.maniaCd = false
+                    }, 1000 * 5)
+                }
+            }
+
+            // fighting state
+            const scoreboard = getScoreboard(true)
+            if (!scoreboard) return
+
+            for (let l of scoreboard) {
+                let line = removeUnicode(l)
+                if (line.includes("Slay the boss!")) {
+                    this.fighting = true
+                    break
+                }
+
+                else if (line.includes("Combat XP") || line.includes(" Kills")) {
+                    this.fighting = false
+                    break
+                }
+
+                else if (this.spawnedByStand && this.timerStand) {
+                    this.reset()  // usually happens when player died mid boss fight
+                }
             }
         })
+
+        registerWhen(
+            register("renderOverlay", () => {
+                Renderer.drawString(
+                    `timerStand: ${this.timerStand ? this.timerStand.getName() : "null"}§r\n\nspawnedByStand: ${this.spawnedByStand ? this.spawnedByStand.getName() : "null"}§r\n\nentity: ${this.entity ? this.entity.getName() : "null"}§r\n\nmania: ${this.mania}§r\n\nfighting: ${this.fighting}§r\n\nmaniaCd: ${this.maniaCd}`,
+                    604,
+                    24,
+                    true
+                )
+            }),
+            () => settings.debug && LocationUtils.getLocation() === "Stillgore Chteau"
+        )
     }
 
     reset() {
