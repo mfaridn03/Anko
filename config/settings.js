@@ -2,6 +2,7 @@ import {
     @SwitchProperty,
     @ColorProperty,
     @SelectorProperty,
+    @SliderProperty,
     Color,
     @Vigilant
 } from "../../Vigilance"
@@ -124,7 +125,18 @@ class Settings {
     })
     announceDeath = 0;
 
-    // TODO: craft melons/hemoglass reminder, !boss party chat command, kills status command, stats command, announce when close to spawning
+    // 63%-94%
+    @SliderProperty({
+        name: "Near Spawning Announcement",
+        description: "(TODO) Say in p chat when you are close to spawning the boss (percentage). Change to minimum value to disable",
+        category: "Party",
+        subcategory: "Announcement",
+        min: 62,
+        max: 94
+    })
+    nearSpawnAnnouncement = 84;
+
+    // TODO: craft melons/hemoglass reminder, !boss party chat command, !kills status command, stats command
 }
 
 export default new Settings;
