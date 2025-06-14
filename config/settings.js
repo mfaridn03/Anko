@@ -3,6 +3,7 @@ import {
     @ColorProperty,
     @SelectorProperty,
     @SliderProperty,
+    @CheckboxProperty,
     Color,
     @Vigilant
 } from "../../Vigilance"
@@ -16,6 +17,10 @@ class Settings {
         this.addDependency("Thrall Colour", "Mob ESP");
         this.addDependency("Fledgling Colour", "Mob ESP");
         this.addDependency("Spectre Path", "Vampire ESP");
+
+        this.addDependency("boss", "Party Commands");
+        this.addDependency("kills", "Party Commands");
+        this.addDependency("help", "Party Commands");
     }
 
     @SwitchProperty({
@@ -136,7 +141,39 @@ class Settings {
     })
     nearSpawnAnnouncement = 84;
 
-    // TODO: craft melons/hemoglass reminder, !boss party chat command, !kills status command, stats command
+    @SwitchProperty({
+        name: "Party Commands",
+        description: "!help, !boss, !kills, (TODO) !stats, (TODO) custom prefix",
+        category: "Party",
+        subcategory: "Commands"
+    })
+    partyCommands = false;
+
+    @CheckboxProperty({
+        name: "help",
+        description: "Show help message",
+        category: "Party",
+        subcategory: "Commands",
+    })
+    pcHelp = true;
+
+    @CheckboxProperty({
+        name: "boss",
+        description: "Boss location and status",
+        category: "Party",
+        subcategory: "Commands",
+    })
+    pcBoss = true;
+
+    @CheckboxProperty({
+        name: "kills",
+        description: "Spawning status",
+        category: "Party",
+        subcategory: "Commands",
+    })
+    pcKills = true;
+
+    // TODO: craft melons/hemoglass reminder, stats command
 }
 
 export default new Settings;
