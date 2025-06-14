@@ -1,8 +1,11 @@
 import settings from "../../config/settings"
 import { getScoreboard, removeUnicode } from "../../utils/interface"
 import LocationUtils from "../../utils/location"
+import events from "../../utils/events"
 
 let announced = false
+let numerator = 0
+let denominator = 1
 
 register("tick", () => {
     if (settings.nearSpawnAnnouncement === 62 || LocationUtils.getLocation() !== "Stillgore Chteau") return
@@ -12,10 +15,6 @@ register("tick", () => {
     for (let i = 0; i < scoreboard.length; i++) {
         let line = removeUnicode(scoreboard[i])
         if (!line) return
-
-        //  (177/900) Combat XP
-        let numerator = 0
-        let denominator = 1
 
         if (line.includes("Combat XP")) {
             let m = line.match(/\((\d+)\/(\d+)\) Combat XP/)
@@ -49,3 +48,17 @@ register("tick", () => {
         }
     }
 })
+
+events.addPartyChatListener(
+    () => {
+        if (LocationUtils.getLocation() !== "Stillgore Chteau")
+            ChatLib.command("pc Not in rift")
+
+        else if (!announced && numerator === 0 && denominator === 1)
+            ChatLib.command("pc Boss already spawned")
+
+        else
+            ChatLib.command(`pc Kills: ${numerator}/${denominator} (${Math.round((numerator / denominator) * 100)}%)`)
+    },
+    (msg) => msg === "!kills" && settings.partyCommands && settings.pcKills
+)
