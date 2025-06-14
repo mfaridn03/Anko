@@ -1,4 +1,4 @@
-import settings from "../config/settings"
+import modSettings from "../config/settings"
 import LocationUtils from "./location"
 
 export default new class Vampire {
@@ -18,6 +18,7 @@ export default new class Vampire {
 
         register("chat", (event) => {
             this.reset()
+            ChatLib.chat("")
         }).setCriteria("§r§aYour Slayer Quest has been cancelled!§r")
 
         register(net.minecraftforge.event.entity.EntityJoinWorldEvent, (event) => {
@@ -37,7 +38,7 @@ export default new class Vampire {
                     this.spawnedByStand = e
                     this.startTime = Date.now()
 
-                    if (settings.announceSpawn) {
+                    if (modSettings.announceSpawn) {
                         ChatLib.command(`pc Boss Spawned @ x: ${Math.round(this.spawnedByStand.getX())}, y: ${Math.round(this.spawnedByStand.getY())}, z: ${Math.round(this.spawnedByStand.getZ())}`)
                     }
                 }
@@ -54,7 +55,7 @@ export default new class Vampire {
             if (this.entity && entity.getUUID().equals(this.entity.getUUID())) {
                 const time = Math.round((Date.now() - this.startTime) / 1000) + 0.01
 
-                switch (settings.announceDeath) {
+                switch (modSettings.announceDeath) {
                     case 1: // Time
                         ChatLib.command(`pc Boss took ${time.toFixed(2)}s to kill`)
                         break
@@ -84,7 +85,7 @@ export default new class Vampire {
                 this.maniaCd = true
                 this.mania++
 
-                if (settings.announceMania)
+                if (modSettings.announceMania)
                     ChatLib.command(`pc Mania Phase ${this.mania} started`)
 
                 setTimeout(() => {
@@ -132,5 +133,9 @@ export default new class Vampire {
 
     entityLocation(render = false, round = false) {
         return this.location(this.entity, render, round)
+    }
+
+    settings() {
+        modSettings.openGUI()
     }
 }
