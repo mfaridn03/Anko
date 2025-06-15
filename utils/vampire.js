@@ -13,8 +13,13 @@ export default new class Vampire {
         this.mania = 0
         this.ticks = 2
         this.fighting = false
+        this.lastSpawn = null
 
         this.maniaCd = false
+
+        register("chat", () => {
+            this.reset()
+        }).setCriteria("&r  &r&c&lSLAYER QUEST FAILED!&r")/* aaaaaaagh */.setContains()
 
         register("worldLoad", () => {
             this.reset()
@@ -23,8 +28,10 @@ export default new class Vampire {
         register(net.minecraftforge.event.entity.EntityJoinWorldEvent, (event) => {
             if (LocationUtils.getLocation() !== "Stillgore Chteau") return
 
-            const e = new Entity(event.entity)
             Client.scheduleTask(2, () => {
+                const e = new Entity(event.entity)
+                if (Player.asPlayerMP().canSeeEntity(e)) this.lastSpawn = e
+
                 if (e.getName().removeFormatting().includes("03:59") && !this.timerStand && this.fighting) {
                     // can trigger from other people's bosses
                     // stop triggering if spawnedByStand is set, last timer stand spawn is almost always the one before the
@@ -36,6 +43,7 @@ export default new class Vampire {
                 if (e.getName().removeFormatting().includes("Spawned by") && e.getName().includes(Player.getName())) {
                     this.spawnedByStand = e
                     this.startTime = Date.now()
+                    if (settings.debug) ChatLib.chat("§8debug:§r spawned")
 
                     if (modSettings.announceSpawn) {
                         ChatLib.command(`pc Boss Spawned @ x: ${Math.round(this.spawnedByStand.getX())}, y: ${Math.round(this.spawnedByStand.getY())}, z: ${Math.round(this.spawnedByStand.getZ())}`)
@@ -105,12 +113,9 @@ export default new class Vampire {
                 }
 
                 else if (line.includes("Combat XP") || line.includes(" Kills")) {
+                    if (this.fighting) this.reset()
                     this.fighting = false
                     break
-                }
-
-                else if (this.spawnedByStand && this.timerStand) {
-                    this.reset()  // usually happens when player died mid boss fight
                 }
             }
         })
@@ -118,7 +123,7 @@ export default new class Vampire {
         registerWhen(
             register("renderOverlay", () => {
                 Renderer.drawString(
-                    `timerStand: ${this.timerStand ? this.timerStand.getName() : "null"}§r\n\nspawnedByStand: ${this.spawnedByStand ? this.spawnedByStand.getName() : "null"}§r\n\nentity: ${this.entity ? this.entity.getName() : "null"}§r\n\nmania: ${this.mania}§r\n\nfighting: ${this.fighting}§r\n\nmaniaCd: ${this.maniaCd}`,
+                    `timerStand: ${this.timerStand?.getName() ?? "null"}§r\n\nspawnedByStand: ${this.spawnedByStand?.getName() ?? "null"}§r\n\nentity: ${this.entity?.getName() ?? "null"}§r\n\nmania: ${this.mania}§r\n\nfighting: ${this.fighting}§r\n\nmaniaCd: ${this.maniaCd}\n\nlastSpawn: ${this.lastSpawn?.getName() ?? "null"}`,
                     604,
                     24,
                     true
@@ -129,6 +134,7 @@ export default new class Vampire {
     }
 
     reset() {
+        if (settings.debug) ChatLib.chat("§8debug:§r reset")
         this.timerStand = null
         this.startTime = null
         this.spawnedByStand = null
