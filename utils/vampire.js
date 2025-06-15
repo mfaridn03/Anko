@@ -6,6 +6,8 @@ import { registerWhen } from "./trigger"
 
 export default new class Vampire {
     constructor() {
+        this.settings = modSettings
+
         this.timerStand = null
         this.startTime = null
         this.spawnedByStand = null
@@ -172,9 +174,5 @@ export default new class Vampire {
 
     entityLocation(render = false, round = false) {
         return this.location(this.entity, render, round)
-    }
-
-    settings() {
-        modSettings.openGUI()
     }
 }

@@ -1,8 +1,13 @@
+import settings from "../config/settings"
+
 export default new class Events {
     constructor() {
         this.partyChatEventListeners = []
 
         register("chat", (_player, msg, _event) => {
+            if (msg.startsWith(settings.commandPrefix))
+                msg = msg.slice(settings.commandPrefix.length)
+
             this.partyChatEventListeners.forEach(li => {
                 if (li.condition(msg))
                     li.action()

@@ -4,6 +4,7 @@ import {
     @SelectorProperty,
     @SliderProperty,
     @CheckboxProperty,
+    @TextProperty,
     Color,
     @Vigilant
 } from "../../Vigilance"
@@ -169,6 +170,13 @@ class Settings {
         subcategory: "Commands"
     })
     partyCommands = false;
+
+    @TextProperty({
+        name: "Command Prefix",
+        category: "Party",
+        subcategory: "Commands"
+    })
+    commandPrefix = "!";
 
     @CheckboxProperty({
         name: "help",

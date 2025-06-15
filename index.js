@@ -9,5 +9,5 @@ import "./features/party/partycommands"
 import vampire from "./utils/vampire"
 
 register("command", () => {
-    vampire.settings()
+    vampire.settings.openGUI()
 }).setName("anko").setAliases(["ak"])
