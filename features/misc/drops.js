@@ -30,10 +30,10 @@ register("chat", (rarity, drop, mf, event) => {
             msg = "§5BURGER"
 
         else if (drop === "Enchanted Book Bundle")
-            msg = "§6BUNDLE"
+            msg = "§6 §k  §k  §k  §r  §6BUNDLE  §6§k  §k  §k  "
 
         else
-            msg = "§cUNFANGED"
+            msg = "§c §k  §k  §k  §r  §cUNFANGED  §c§k  §k  §k  "
 
         Client.showTitle(msg, `§b${mf} mf`, 0, 40, 0)
         // TODO: custom sound
