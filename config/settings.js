@@ -21,6 +21,8 @@ class Settings {
         this.addDependency("boss", "Party Commands");
         this.addDependency("kills", "Party Commands");
         this.addDependency("help", "Party Commands");
+
+        this.addDependency("Count Threshold", "Crafting Reminder")
     }
 
     @SwitchProperty({
@@ -105,6 +107,25 @@ class Settings {
     rngDropTitle = false;
 
     @SwitchProperty({
+        name: "Crafting Reminder",
+        description: "Reminder to craft enchanted melons and hemoglass when there's enough items in your inv",
+        category: "Misc",
+        subcategory: "Crafting"
+    })
+    craftingReminder = false;
+
+    @SliderProperty({
+        name: "Count Threshold",
+        description: "Minimum number of hemovibe/melons before reminder (160 = minimum amount to craft)",
+        category: "Misc",
+        subcategory: "Crafting",
+        min: 160,
+        max: 192
+    })
+    countThreshold = 160;
+
+
+    @SwitchProperty({
         name: "Announce Spawn",
         description: "Say in p chat when you spawn the boss",
         category: "Party",
@@ -133,7 +154,7 @@ class Settings {
     // 63%-94%
     @SliderProperty({
         name: "Near Spawning Announcement",
-        description: "(TODO) Say in p chat when you are close to spawning the boss (percentage). Change to minimum value to disable",
+        description: "Say in p chat when you are close to spawning the boss (percentage). Set to minimum value to disable",
         category: "Party",
         subcategory: "Announcement",
         min: 62,
@@ -173,7 +194,7 @@ class Settings {
     })
     pcKills = true;
 
-    // TODO: craft melons/hemoglass reminder, stats command
+    // TODO: stats command ?
 }
 
 export default new Settings;
