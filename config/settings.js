@@ -87,6 +87,47 @@ class Settings {
     ichorHelper = false;
 
     @SwitchProperty({
+        name: "Hide Players",
+        description: "Hide nearby players",
+        category: "Visual",
+        subcategory: "Player Hider"
+    })
+    hidePlayers = false;
+
+    @SliderProperty({
+        name: "Hide Distance",
+        category: "Visual",
+        subcategory: "Player Hider",
+        min: 1,
+        max: 16
+    })
+    hideDistance = 0;
+
+    @SwitchProperty({
+        name: "Boss Only",
+        description: "(TODO) Hide players only during boss fight",
+        category: "Visual",
+        subcategory: "Player Hider"
+    })
+    hidePlayersBossOnly = false;
+
+    @SwitchProperty({
+        name: "Highlight Hidden Players",
+        description: "(TODO) Replace hidden players with a box and nametag",
+        category: "Visual",
+        subcategory: "Player Hider"
+    })
+    highlightHiddenPlayers = false;
+
+    @ColorProperty({
+        name: "Hidden Player Colour",
+        description: "(TODO) If enabled, box will have this colour (recommended: set transparency to low)",
+        category: "Visual",
+        subcategory: "Player Hider"
+    })
+    hiddenPlayerColour = new Color(0.8, 0.8, 1, 0.2);
+
+    @SwitchProperty({
         name: "Bundle Drop Message",
         description: "Replaces the default bundle drop message to 'The One IV Bundle'",
         category: "Misc",
@@ -124,7 +165,6 @@ class Settings {
         max: 192
     })
     countThreshold = 160;
-
 
     @SwitchProperty({
         name: "Announce Spawn",
