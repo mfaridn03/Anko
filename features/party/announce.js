@@ -35,7 +35,7 @@ register("tick", () => {
 
         // fighting boss
         else if (line.includes("Slay the boss!")) {
-            announced = true
+            announced = false
         }
 
         else

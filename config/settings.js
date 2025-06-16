@@ -165,7 +165,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Party Commands",
-        description: "!help, !boss, !kills, (TODO) !stats, (TODO) custom prefix",
+        description: "!help, !boss, !kills, (TODO) !stats, custom prefix",
         category: "Party",
         subcategory: "Commands"
     })
