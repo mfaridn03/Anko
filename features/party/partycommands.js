@@ -15,7 +15,7 @@ Events.addPartyChatListener(
 // !boss
 Events.addPartyChatListener(
     () => {
-        if (!location.getLocation() === "Stillgore Chteau")
+        if (!location.inStillgore())
             ChatLib.command("pc Not in rift")
 
         else if (!vampire.spawnedByStand || !vampire.entity)

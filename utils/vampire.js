@@ -28,7 +28,7 @@ export default new class Vampire {
         })
 
         register(net.minecraftforge.event.entity.EntityJoinWorldEvent, (event) => {
-            if (LocationUtils.getLocation() !== "Stillgore Chteau") return
+            if (!LocationUtils.inStillgore()) return
 
             Client.scheduleTask(2, () => {
                 const e = new Entity(event.entity)
@@ -131,7 +131,7 @@ export default new class Vampire {
                     true
                 )
             }),
-            () => settings.debug && LocationUtils.getLocation() === "Stillgore Chteau"
+            () => settings.debug && LocationUtils.inStillgore()
         )
     }
 

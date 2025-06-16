@@ -1,8 +1,8 @@
 import settings from "../../config/settings"
-import LocationUtils from "../../utils/location"
 import { registerWhen } from "../../utils/trigger"
 import { drawLines } from "../../utils/render"
 import RenderLib from "../../../RenderLibV2J"
+import location from "../../utils/location"
 
 const EntityOtherPlayerMP = Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")
 let currentBoss = null
@@ -39,7 +39,7 @@ registerWhen(
             currentBoss = null
         }
     }),
-    () => LocationUtils.getLocation() === "Stillgore Chteau" && (settings.mobESP || settings.vampireESP)
+    () => location.inStillgore() && (settings.mobESP || settings.vampireESP)
 )
 
 registerWhen(
@@ -90,5 +90,5 @@ registerWhen(
             }
         }
     }),
-    () => LocationUtils.getLocation() === "Stillgore Chteau" && (settings.mobESP || settings.vampireESP || settings.spectrePath)
+    () => location.inStillgore() && (settings.mobESP || settings.vampireESP || settings.spectrePath)
 )

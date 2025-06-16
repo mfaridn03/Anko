@@ -44,4 +44,8 @@ export default new class LocationUtils {
     entityDistance2d(entity1, entity2) {
         return Math.sqrt(Math.pow(entity1.getX() - entity2.getX(), 2) + Math.pow(entity1.getZ() - entity2.getZ(), 2))
     }
+
+    inStillgore() {
+        return this.location === "Stillgore Chteau"
+    }
 }

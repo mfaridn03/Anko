@@ -1,11 +1,11 @@
 import settings from "../../config/settings"
-import LocationUtils from "../../utils/location"
+import location from "../../utils/location"
 
 const ToolKit = Java.type("java.awt.Toolkit")
 const StringSelection = Java.type("java.awt.datatransfer.StringSelection")
 
 register("chat", (rarity, drop, mf, event) => {
-    if (LocationUtils.getLocation() !== "Stillgore Chteau") return
+    if (!location.inStillgore()) return
     if (!settings.bundleDropMessage && !settings.copyRNGDrops && !settings.rngDropTitle) return
 
     let message = ChatLib.getChatMessage(event, true)

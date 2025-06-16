@@ -1,5 +1,5 @@
 import settings from "../../config/settings"
-import LocationUtils from "../../utils/location"
+import location from "../../utils/location"
 import { registerWhen } from "../../utils/trigger"
 
 let timerStand = null
@@ -51,7 +51,7 @@ register("entityDeath", (entity) => {
 })
 
 register("attackEntity", (entity, event) => {
-    if (!bossEntity && spawnedByStand && timerStand && LocationUtils.entityDistance2d(entity, timerStand) < 1) {
+    if (!bossEntity && spawnedByStand && timerStand && location.entityDistance2d(entity, timerStand) < 1) {
         bossEntity = entity
         ChatLib.chat(`Found boss entity: ${entity.getName().removeFormatting()}`)
     }
@@ -67,12 +67,12 @@ registerWhen(
             i++
         }
     }),
-    () => settings.debug && settings.ichorHelper && LocationUtils.getLocation() === "Stillgore Chteau"
+    () => settings.debug && settings.ichorHelper && location.inStillgore()
 )
 
 registerWhen(
     register("renderWorld", () => { },
-        () => settings.ichorHelper && LocationUtils.getLocation() === "Stillgore Chteau"
+        () => settings.ichorHelper && location.inStillgore()
     ),
-    () => settings.ichorHelper && LocationUtils.getLocation() === "Stillgore Chteau"
+    () => settings.ichorHelper && location.inStillgore()
 )

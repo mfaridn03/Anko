@@ -1,14 +1,14 @@
 import settings from "../../config/settings"
 import { getScoreboard, removeUnicode } from "../../utils/interface"
-import LocationUtils from "../../utils/location"
 import events from "../../utils/events"
+import location from "../../utils/location"
 
 let announced = false
 let numerator = 0
 let denominator = 1
 
 register("tick", () => {
-    if (settings.nearSpawnAnnouncement === 62 || LocationUtils.getLocation() !== "Stillgore Chteau") return
+    if (settings.nearSpawnAnnouncement === 62 || !location.inStillgore()) return
     const scoreboard = getScoreboard(true)
     if (!scoreboard) return
 
@@ -53,7 +53,7 @@ register("tick", () => {
 
 events.addPartyChatListener(
     () => {
-        if (LocationUtils.getLocation() !== "Stillgore Chteau")
+        if (!location.inStillgore())
             ChatLib.command("pc Not in rift")
 
         else if (!announced && numerator === 0 && denominator === 1)

@@ -8,7 +8,7 @@ let lastHemovibes = 0
 let lastMelons = 0
 
 register("tick", () => {
-    if (!settings.craftingReminder || location.getLocation() !== "Stillgore Chteau") return
+    if (!settings.craftingReminder || !location.inStillgore()) return
 
     const hemovibes = countInventoryItems("HEMOVIBE")
     const melons = countInventoryItems("VAMPIRIC_MELON")
