@@ -25,7 +25,7 @@ register(net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent, (
 })
 
 registerWhen(
-    register("renderWorld", (pt) => {
+    register("renderWorld", () => {
         const toDelete = []
 
         hiddenPlayers.forEach((v, k, _m) => {
@@ -43,17 +43,19 @@ registerWhen(
                         false
                     )
 
-                    try {
-                        Tessellator.drawString(
-                            v?.getDisplayName()?.getText() ?? v.getName(),
-                            v.getRenderX(), v.getRenderY() + 0.4 + v.getHeight(), v.getRenderZ(),
-                            Color.WHITE.getRGB(),
-                            true,
-                            1.5,
-                            true
-                        )
-                    } catch (e) {
-                        // i have no idea why it randomly throws null pointer exception error (rendering is still fine)
+                    if (Player.asPlayerMP().canSeeEntity(v)) {  // no x ray!
+                        try {
+                            Tessellator.drawString(
+                                v?.getDisplayName()?.getText() ?? v.getName(),
+                                v.getRenderX(), v.getRenderY() + 0.4 + v.getHeight(), v.getRenderZ(),
+                                Color.WHITE.getRGB(),
+                                true,
+                                0.03,
+                                false
+                            )
+                        } catch (e) {
+                            // i have no idea why it randomly throws null pointer exception error (rendering is still fine)
+                        }
                     }
                 }
             }
