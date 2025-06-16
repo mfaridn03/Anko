@@ -121,11 +121,11 @@ class Settings {
 
     @ColorProperty({
         name: "Hidden Player Colour",
-        description: "(TODO) If enabled, box will have this colour (recommended: set transparency to low)",
+        description: "If enabled, box will have this colour (recommended: set transparency to low)",
         category: "Visual",
         subcategory: "Player Hider"
     })
-    hiddenPlayerColour = new Color(0.8, 0.8, 1, 0.2);
+    hiddenPlayerColour = new Color(0.8, 0.8, 1, 0.15);
 
     @SwitchProperty({
         name: "Bundle Drop Message",

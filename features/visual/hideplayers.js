@@ -1,17 +1,69 @@
 import settings from "../../config/settings"
 import location from "../../utils/location"
+import { registerWhen } from "../../utils/trigger"
+import RenderLib from "../../../RenderLibV2J"
 
+let hiddenPlayers = new Map()
+const Color = Java.type("java.awt.Color")
 
 register(net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent, (event) => {
-    if (!settings.hidePlayers || settings.debug ? false : !location.inStillgore()) return
+    if (!settings.hidePlayers || (!location.inStillgore() && !settings.debug)) return
     if (!(event.entity instanceof net.minecraft.entity.player.EntityPlayer) || event.entity == Client.getMinecraft().field_71439_g) return
+    if (event.entity.func_110124_au().version() === 2) return
 
     const e = new Entity(event.entity)
-    if (e.getUUID().version() === 2) return
+    if (e.distanceTo(Player.asPlayerMP()) <= settings.hideDistance && !hiddenPlayers.has(e.getUUID().toString())) {
+        if (settings.debug)
+            ChatLib.chat(`§8debug:§r hidden ${e.getName()}, added to set, size=${hiddenPlayers.size}`)
 
-    if (e.distanceTo(Player.asPlayerMP()) <= settings.hideDistance) {
-        e.setPosition(e.getX(), e.getY() + 999999, e.getZ())
-        cancel(event)
-        if (settings.debug) ChatLib.chat(`§8debug:§r hidden ${e.getName()}`)
+        hiddenPlayers.set(e.getUUID().toString(), new PlayerMP(event.entity))
     }
+    else if (hiddenPlayers.has(e.getUUID().toString()) && Player.asPlayerMP().distanceTo(e) > settings.hideDistance) {
+        hiddenPlayers.delete(e.getUUID().toString())
+        if (settings.debug) ChatLib.chat(`removed ${event.entity.func_70005_c_()} from set`)
+    }
+})
+
+registerWhen(
+    register("renderWorld", (pt) => {
+        const toDelete = []
+
+        hiddenPlayers.forEach((v, k, _m) => {
+            if (v instanceof PlayerMP) {
+                if (!World.getWorld().func_152378_a(v.getUUID())) {
+                    toDelete.push(k)
+                    ChatLib.chat(`§8debug:§r removed ${v.getName()} because not in world`)
+                }
+
+                else {
+                    RenderLib.drawInnerEspBoxV2(
+                        v.getRenderX(), v.getRenderY() + 0.02, v.getRenderZ(),
+                        v.getWidth(), v.getHeight(), v.getWidth(),
+                        settings.hiddenPlayerColour.getRed() / 255, settings.hiddenPlayerColour.getGreen() / 255, settings.hiddenPlayerColour.getBlue() / 255, settings.hiddenPlayerColour.getAlpha() / 255,
+                        false
+                    )
+
+                    try {
+                        Tessellator.drawString(
+                            v?.getDisplayName()?.getText() ?? v.getName(),
+                            v.getRenderX(), v.getRenderY() + 0.4 + v.getHeight(), v.getRenderZ(),
+                            Color.WHITE.getRGB(),
+                            true,
+                            1.5,
+                            true
+                        )
+                    } catch (e) {
+                        // i have no idea why it randomly throws null pointer exception error (rendering is still fine)
+                    }
+                }
+            }
+        })
+
+        toDelete.forEach(uuid => hiddenPlayers.delete(uuid))
+    }),
+    () => settings.hidePlayers && settings.highlightHiddenPlayers
+)
+
+register("renderEntity", (entity, _pos, _pt, event) => {
+    if (hiddenPlayers.has(entity.getUUID().toString()) && settings.hidePlayers) cancel(event)
 })
