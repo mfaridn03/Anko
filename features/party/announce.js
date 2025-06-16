@@ -16,7 +16,7 @@ register("tick", () => {
         let line = removeUnicode(scoreboard[i])
         if (!line) return
 
-        if (line.includes("Combat XP")) {
+        if (line.includes("Combat XP") && !announced) {
             let m = line.match(/\((\d+)\/(\d+)\) Combat XP/)
             if (m) {
                 numerator = parseInt(m[1])
@@ -25,7 +25,7 @@ register("tick", () => {
         }
 
         //  16/19 Kills
-        else if (line.includes(" Kills")) {
+        else if (line.includes(" Kills") && !announced) {
             let m2 = line.match(/(\d+)\/(\d+) Kills/)
             if (m2) {
                 numerator = parseInt(m2[1])
@@ -35,15 +35,17 @@ register("tick", () => {
 
         // fighting boss
         else if (line.includes("Slay the boss!")) {
+            numerator = 0
+            denominator = 1
             announced = false
         }
 
         else
             continue
 
-        if (denominator === 0) continue
+        if (numerator / denominator === 0) continue
         if (numerator / denominator * 100 >= settings.nearSpawnAnnouncement && !announced) {
-            ChatLib.command(`pc Spawning soon (${numerator}/${denominator} - ${Math.round((numerator / denominator) * 100)}%)`)
+            ChatLib.command(`pc Spawning soon (${numerator}/${denominator})`)
             announced = true
         }
     }
