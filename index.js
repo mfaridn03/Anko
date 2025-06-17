@@ -1,7 +1,6 @@
 import "./test/test"
 import "./features/visual/esp"
 import "./features/visual/hideplayers"
-// import "./features/ichor"
 import "./features/misc/drops"
 import "./features/misc/craftreminder"
 import "./features/party/announce"

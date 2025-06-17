@@ -24,7 +24,6 @@ register("tick", () => {
             }
         }
 
-        //  16/19 Kills
         else if (line.includes(" Kills") && !announced) {
             let m2 = line.match(/(\d+)\/(\d+) Kills/)
             if (m2) {
@@ -33,7 +32,6 @@ register("tick", () => {
             }
         }
 
-        // fighting boss
         else if (line.includes("Slay the boss!")) {
             numerator = 0
             denominator = 1

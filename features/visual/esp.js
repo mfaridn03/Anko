@@ -46,14 +46,8 @@ registerWhen(
     register("renderWorld", () => {
         if (currentBoss) {
             if (invisStart && settings.spectrePath !== 0) {
-                // RenderLib.drawLine(
-                //     invisStart.x, invisStart.y, invisStart.z,
-                //     currentBoss.getRenderX(), invisStart.y, currentBoss.getRenderZ(),
-                //     1, 1, 1, 0.8, true, 10
-                // )
-
                 switch (settings.spectrePath) {
-                    case 1:
+                    case 1: // 2d
                         RenderLib.drawLine(
                             invisStart.x, invisStart.y, invisStart.z,
                             currentBoss.getRenderX(), invisStart.y, currentBoss.getRenderZ(),
