@@ -105,7 +105,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Boss Only",
-        description: "(TODO) Hide players only during boss fight",
+        description: "Hide players only during boss fight",
         category: "Visual",
         subcategory: "Player Hider"
     })
@@ -113,7 +113,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Highlight Hidden Players",
-        description: "(TODO) Replace hidden players with a box and nametag",
+        description: "Replace hidden players with a box and nametag",
         category: "Visual",
         subcategory: "Player Hider"
     })

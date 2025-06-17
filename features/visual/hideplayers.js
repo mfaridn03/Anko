@@ -2,12 +2,18 @@ import settings from "../../config/settings"
 import location from "../../utils/location"
 import { registerWhen } from "../../utils/trigger"
 import RenderLib from "../../../RenderLibV2J"
+import vampire from "../../utils/vampire"
 
 let hiddenPlayers = new Map()
 const Color = Java.type("java.awt.Color")
 
 register(net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent, (event) => {
-    if (!settings.hidePlayers || (!location.inStillgore() && !settings.debug)) return
+    // module check
+    if (!settings.hidePlayers || (!location.inStillgore() && !settings.debug) || (!vampire.fighting && settings.hidePlayersBossOnly)) {
+        if (hiddenPlayers.size !== 0) hiddenPlayers.clear()
+        return
+    }
+    // entity check
     if (!(event.entity instanceof net.minecraft.entity.player.EntityPlayer) || event.entity == Client.getMinecraft().field_71439_g) return
     if (event.entity.func_110124_au().version() === 2) return
 
@@ -63,11 +69,13 @@ registerWhen(
 
         toDelete.forEach(uuid => hiddenPlayers.delete(uuid))
     }),
-    () => settings.hidePlayers && settings.highlightHiddenPlayers
+    () => settings.hidePlayers && settings.highlightHiddenPlayers && (settings.hidePlayersBossOnly ? vampire.fighting : true)
 )
 
 register("renderEntity", (entity, _pos, _pt, event) => {
-    if (hiddenPlayers.has(entity.getUUID().toString()) && settings.hidePlayers) cancel(event)
+    if (settings.hidePlayers && (settings.hidePlayersBossOnly ? vampire.fighting : true))
+        if (hiddenPlayers.has(entity.getUUID().toString()) && settings.hidePlayers)
+            cancel(event)
 })
 
 register("worldLoad", () => hiddenPlayers.clear())
