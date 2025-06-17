@@ -1,7 +1,7 @@
 {
     "name": "Anko",
     "creator": "mfaridn03",
-    "description": "",
+    "description": "Vampire slayer utils",
     "version": "1.0.0",
     "entry": "index.js",
     "requires": [
