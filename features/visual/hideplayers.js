@@ -69,3 +69,5 @@ registerWhen(
 register("renderEntity", (entity, _pos, _pt, event) => {
     if (hiddenPlayers.has(entity.getUUID().toString()) && settings.hidePlayers) cancel(event)
 })
+
+register("worldLoad", () => hiddenPlayers.clear())

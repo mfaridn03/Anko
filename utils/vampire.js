@@ -9,43 +9,39 @@ export default new class Vampire {
         this.settings = modSettings
 
         this.timerStand = null
-        this.startTime = null
         this.spawnedByStand = null
         this.entity = null
-        this.mania = 0
-        this.ticks = 2
-        this.fighting = false
-        this.lastSpawn = null
 
+        this.startTime = null
+        this.ticks = 2
+
+        this.fighting = false
+        this.mania = 0
         this.maniaCd = false
 
-        register("chat", () => {
-            this.reset()
-        }).setCriteria("&r  &r&c&lSLAYER QUEST FAILED!&r")/* aaaaaaagh */.setContains()
+        register("chat", () => this.reset()).setCriteria("&r  &r&c&lSLAYER QUEST FAILED!&r")/* aaaaaaagh */.setContains()
+
+        register("chat", () => this.reset()).setCriteria("&r&aYour Slayer Quest has been cancelled!&r").setContains()
 
         register("worldLoad", () => {
             this.reset()
         })
 
         register(net.minecraftforge.event.entity.EntityJoinWorldEvent, (event) => {
-            if (!LocationUtils.inStillgore()) return
+            if (!LocationUtils.inStillgore() || this.spawnedByStand) return
 
             Client.scheduleTask(2, () => {
                 const e = new Entity(event.entity)
-                if (Player.asPlayerMP().canSeeEntity(e)) this.lastSpawn = e
+                const m = e.getName().removeFormatting().match(/^Spawned by: (.+)$/)
 
-                if (e.getName().removeFormatting().includes("03:59") && !this.timerStand && this.fighting) {
-                    // can trigger from other people's bosses
-                    // stop triggering if spawnedByStand is set, last timer stand spawn is almost always the one before the
-                    // correct spawnedby stand (hopefully)
-                    if (this.spawnedByStand) return
-                    this.timerStand = e
-                }
+                if (m[1] === Player.getName()) {
+                    const spawnedId = event.entity.func_145782_y()
+                    this.timerStand = new Entity(World.getWorld().func_73045_a(spawnedId - 1))
+                    // let bossTag = World.getWorld().func_73045_a(spawnedId - 2)  // boss name + hp
+                    this.entity = new Entity(World.getWorld().func_73045_a(spawnedId - 3))
 
-                if (e.getName().removeFormatting().includes("Spawned by") && e.getName().includes(Player.getName())) {
                     this.spawnedByStand = e
                     this.startTime = Date.now()
-                    if (settings.debug) ChatLib.chat("§8debug:§r spawned")
 
                     if (modSettings.announceSpawn) {
                         ChatLib.command(`pc Boss Spawned @ x: ${Math.round(this.spawnedByStand.getX())}, y: ${Math.round(this.spawnedByStand.getY())}, z: ${Math.round(this.spawnedByStand.getZ())}`)
@@ -54,15 +50,9 @@ export default new class Vampire {
             })
         })
 
-        register("attackEntity", (entity, _event) => {
-            if (!this.entity && this.spawnedByStand && LocationUtils.entityDistance2d(entity, this.spawnedByStand) < 1) {
-                this.entity = entity
-            }
-        })
-
         register("entityDeath", (entity) => {
             if (this.entity && entity.getUUID().equals(this.entity.getUUID())) {
-                const time = Math.round((Date.now() - this.startTime) / 1000) + 0.01
+                const time = Math.round((Date.now() - this.startTime) / 1000) + 0.1 // + 2 ticks
 
                 switch (modSettings.announceDeath) {
                     case 1: // Time
@@ -82,8 +72,9 @@ export default new class Vampire {
         })
 
         register("packetReceived", (packet, event) => {
+            // counting server ticks
             if (packet.func_148890_d() > 0) return
-            if (this.spawnedByStand) this.ticks++
+            if (this.entity) this.ticks++
 
         }).setFilteredClass(net.minecraft.network.play.server.S32PacketConfirmTransaction)
 
@@ -107,25 +98,30 @@ export default new class Vampire {
             const scoreboard = getScoreboard(true)
             if (!scoreboard) return
 
+            let broken = false
+
             for (let l of scoreboard) {
                 let line = removeUnicode(l)
                 if (line.includes("Slay the boss!")) {
                     this.fighting = true
+                    broken = true
                     break
                 }
 
                 else if (line.includes("Combat XP") || line.includes(" Kills")) {
                     if (this.fighting) this.reset()
-                    this.fighting = false
+                    broken = true
                     break
                 }
             }
+
+            if (!broken && this.fighting) /* */ this.reset()
         })
 
         registerWhen(
             register("renderOverlay", () => {
                 Renderer.drawString(
-                    `timerStand: ${this.timerStand?.getName() ?? "null"}§r\n\nspawnedByStand: ${this.spawnedByStand?.getName() ?? "null"}§r\n\nentity: ${this.entity?.getName() ?? "null"}§r\n\nmania: ${this.mania}§r\n\nfighting: ${this.fighting}§r\n\nmaniaCd: ${this.maniaCd}\n\nlastSpawn: ${this.lastSpawn?.getName() ?? "null"}`,
+                    `timerStand: ${this.timerStand?.getName() ?? "null"}§r\n\nspawnedByStand: ${this.spawnedByStand?.getName() ?? "null"}§r\n\nentity: ${this.entity?.getName() ?? "null"}§r\n\nmania: ${this.mania}§r\n\nfighting: ${this.fighting}§r\n\nmaniaCd: ${this.maniaCd}`,
                     604,
                     24,
                     true
@@ -144,6 +140,7 @@ export default new class Vampire {
         this.mania = 0
         this.ticks = 2
         this.maniaCd = false
+        this.fighting = false
     }
 
     location(ent, render = false, round = false) {
