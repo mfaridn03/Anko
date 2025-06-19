@@ -36,10 +36,8 @@ registerWhen(
 
         hiddenPlayers.forEach((v, k, _m) => {
             if (v instanceof PlayerMP) {
-                if (!World.getWorld().func_152378_a(v.getUUID())) {
+                if (!World.getWorld().func_152378_a(v.getUUID()))
                     toDelete.push(k)
-                    ChatLib.chat(`§8debug:§r removed ${v.getName()} because not in world`)
-                }
 
                 else {
                     RenderLib.drawInnerEspBoxV2(

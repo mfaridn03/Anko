@@ -242,7 +242,7 @@ class Settings {
     })
     pcKills = true;
 
-    // TODO: stats command ?
+    // TODO: stats command (?), splits
 }
 
 export default new Settings;

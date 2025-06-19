@@ -23,7 +23,7 @@ Events.addPartyChatListener(
 
         else {
             const coords = vampire.entityLocation(false, true)
-            ChatLib.command(`pc Boss at x: ${coords.x}, y: ${coords.y}, z: ${coords.z} | Health: ${(new EntityLivingBase(vampire.entity)).getHP()}`)
+            ChatLib.command(`pc Boss at x: ${coords.x}, y: ${coords.y}, z: ${coords.z} | Health: ${(new EntityLivingBase(vampire.entity.getEntity())).getHP()}`)
         }
     },
     (cmd) => cmd === "boss" && settings.partyCommands && settings.pcBoss
