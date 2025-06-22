@@ -7,6 +7,8 @@ let announced = false
 let numerator = 0
 let denominator = 1
 
+// TODO: combine this onto vampire.js
+
 register("tick", () => {
     if (settings.nearSpawnAnnouncement === 62 || !location.inStillgore()) return
     const scoreboard = getScoreboard(true)

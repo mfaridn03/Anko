@@ -5,6 +5,7 @@ import "./features/misc/drops"
 import "./features/misc/craftreminder"
 import "./features/party/announce"
 import "./features/party/partycommands"
+import "./features/party/tps"
 
 import vampire from "./utils/vampire"
 

@@ -205,7 +205,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Party Commands",
-        description: "!help, !boss, !kills, (TODO) !stats, custom prefix",
+        description: "help, boss, kills, tps, (TODO) stats",
         category: "Party",
         subcategory: "Commands"
     })
@@ -241,6 +241,14 @@ class Settings {
         subcategory: "Commands",
     })
     pcKills = true;
+
+    @CheckboxProperty({
+        name: "tps",
+        description: "Server tps",
+        category: "Party",
+        subcategory: "Commands"
+    })
+    pcTps = true;
 
     // TODO: stats command (?), splits
 }
