@@ -62,5 +62,5 @@ events.addPartyChatListener(
         else
             ChatLib.command(`pc Kills: ${numerator}/${denominator} (${Math.round((numerator / denominator) * 100)}%)`)
     },
-    (cmd) => cmd === "kills" && settings.partyCommands && settings.pcKills
+    (cmd) => cmd === "kills" && settings.pcKills
 )

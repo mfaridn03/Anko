@@ -7,9 +7,9 @@ import vampire from "../../utils/vampire"
 Events.addPartyChatListener(
     () => {
         const pf = settings.commandPrefix
-        ChatLib.command(`pc Commands: ${pf}help, ${pf}boss, ${pf}kills`)
+        ChatLib.command(`pc Commands: ${pf}help, ${pf}boss, ${pf}kills, ${pf}tps`)
     },
-    (cmd) => cmd === "help" && settings.partyCommands
+    (cmd) => cmd === "help"
 )
 
 // !boss
@@ -26,7 +26,7 @@ Events.addPartyChatListener(
             ChatLib.command(`pc Boss at x: ${coords.x}, y: ${coords.y}, z: ${coords.z} | Health: ${(new EntityLivingBase(vampire.entity.getEntity())).getHP()}`)
         }
     },
-    (cmd) => cmd === "boss" && settings.partyCommands && settings.pcBoss
+    (cmd) => cmd === "boss" && settings.pcBoss
 )
 
 // !kills in announce.js

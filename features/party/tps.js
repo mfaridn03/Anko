@@ -16,11 +16,11 @@ Events.addPartyChatListener(
     () => {
         const diff = Date.now() - packets.lastReset
 
-        // if less than 10s, error
+        // if less than 10s, warn
         if (diff < WAIT)
             ChatLib.command(`pc TPS still loading, ${((WAIT - diff) / 1000).toFixed(1)}s remaining`)
         else
             ChatLib.command(`pc TPS: ${(packets.size() / 10).toFixed(1)}`)
     },
-    (cmd) => cmd === "tps" && settings.partyCommands && settings.pcTps
+    (cmd) => cmd === "tps" && settings.pcTps
 )

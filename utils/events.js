@@ -5,6 +5,8 @@ export default new class Events {
         this.partyChatEventListeners = []
 
         register("chat", (_player, msg, _event) => {
+            if (!settings.partyCommands) return
+
             if (msg.startsWith(settings.commandPrefix))
                 msg = msg.slice(settings.commandPrefix.length)
 
