@@ -20,7 +20,7 @@ Events.addPartyChatListener(
         if (diff < WAIT)
             ChatLib.command(`pc TPS still loading, ${((WAIT - diff) / 1000).toFixed(1)}s remaining`)
         else
-            ChatLib.command(`pc TPS: ${(packets.size() / 10).toFixed(1)}`)
+            ChatLib.command(`pc TPS: ${(packets.size() / (WAIT / 1000)).toFixed(1)}`)
     },
     (cmd) => cmd === "tps" && settings.pcTps
 )
