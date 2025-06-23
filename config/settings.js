@@ -251,6 +251,7 @@ class Settings {
     pcTps = true;
 
     // TODO: stats command (?), splits
+    // TODO: minimalistic visual mode
 }
 
 export default new Settings;

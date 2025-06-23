@@ -2,7 +2,7 @@ import settings from "../../config/settings";
 import Events from "../../utils/events";
 import { ExpiringArray } from "../../utils/misc";
 
-const WAIT = 10_000
+const WAIT = 5000
 const packets = new ExpiringArray(200, WAIT)
 
 
