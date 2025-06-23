@@ -3,8 +3,8 @@ import { registerWhen } from "../../utils/trigger"
 import { drawLines } from "../../utils/render"
 import RenderLib from "../../../RenderLibV2J"
 import location from "../../utils/location"
+import { EntityOtherPlayerMP } from "../../utils/consts"
 
-const EntityOtherPlayerMP = Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")
 let currentBoss = null
 let invisStart = null
 let spectreCoords = []

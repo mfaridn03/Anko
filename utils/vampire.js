@@ -1,5 +1,6 @@
 import settings from "../config/settings"
 import modSettings from "../config/settings"
+import { ForgeEvents, Packets } from "./consts"
 import { getScoreboard, removeUnicode } from "./interface"
 import LocationUtils from "./location"
 import { registerWhen } from "./trigger"
@@ -27,7 +28,7 @@ export default new class Vampire {
             this.reset()
         })
 
-        register(net.minecraftforge.event.entity.EntityJoinWorldEvent, (event) => {
+        register(ForgeEvents.EntityJoinWorldEvent, (event) => {
             if (!LocationUtils.inStillgore() || this.spawnedByStand) return
 
             Client.scheduleTask(2, () => {
@@ -76,7 +77,7 @@ export default new class Vampire {
             if (packet.func_148890_d() > 0) return
             if (this.entity) this.ticks++
 
-        }).setFilteredClass(net.minecraft.network.play.server.S32PacketConfirmTransaction)
+        }).setFilteredClass(Packets.S32PacketConfirmTransaction)
 
         register("tick", () => {
             if (this.spawnedByStand && this.timerStand) {

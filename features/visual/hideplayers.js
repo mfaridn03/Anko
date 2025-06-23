@@ -3,18 +3,19 @@ import location from "../../utils/location"
 import { registerWhen } from "../../utils/trigger"
 import RenderLib from "../../../RenderLibV2J"
 import vampire from "../../utils/vampire"
+import { EntityPlayer, ForgeEvents } from "../../utils/consts"
 
 let hiddenPlayers = new Map()
 const Color = Java.type("java.awt.Color")
 
-register(net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent, (event) => {
+register(ForgeEvents.LivingUpdateEvent, (event) => {
     // module check
     if (!settings.hidePlayers || (!location.inStillgore() && !settings.debug) || (!vampire.fighting && settings.hidePlayersBossOnly)) {
         if (hiddenPlayers.size !== 0) hiddenPlayers.clear()
         return
     }
     // entity check
-    if (!(event.entity instanceof net.minecraft.entity.player.EntityPlayer) || event.entity == Client.getMinecraft().field_71439_g) return
+    if (!(event.entity instanceof EntityPlayer) || event.entity == Client.getMinecraft().field_71439_g) return
     if (event.entity.func_110124_au().version() === 2) return
 
     const e = new Entity(event.entity)
