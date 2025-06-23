@@ -3,7 +3,7 @@ import location from "../../utils/location"
 import { registerWhen } from "../../utils/trigger"
 import RenderLib from "../../../RenderLibV2J"
 import vampire from "../../utils/vampire"
-import { EntityPlayer, ForgeEvents } from "../../utils/consts"
+import { clientDebug, EntityPlayer, ForgeEvents } from "../../utils/consts"
 
 let hiddenPlayers = new Map()
 const Color = Java.type("java.awt.Color")
@@ -21,13 +21,13 @@ register(ForgeEvents.LivingUpdateEvent, (event) => {
     const e = new Entity(event.entity)
     if (e.distanceTo(Player.asPlayerMP()) <= settings.hideDistance && !hiddenPlayers.has(e.getUUID().toString())) {
         if (settings.debug)
-            ChatLib.chat(`§8debug:§r hidden ${e.getName()}, added to set, size=${hiddenPlayers.size}`)
+            clientDebug(`hidden ${e.getName()}, added to set, size=${hiddenPlayers.size}`)
 
         hiddenPlayers.set(e.getUUID().toString(), new PlayerMP(event.entity))
     }
     else if (hiddenPlayers.has(e.getUUID().toString()) && Player.asPlayerMP().distanceTo(e) > settings.hideDistance) {
         hiddenPlayers.delete(e.getUUID().toString())
-        if (settings.debug) ChatLib.chat(`removed ${event.entity.func_70005_c_()} from set`)
+        if (settings.debug) clientDebug(`removed ${event.entity.func_70005_c_()} from set`)
     }
 })
 

@@ -2,6 +2,7 @@ import settings from "../../config/settings"
 import { getScoreboard, removeUnicode } from "../../utils/interface"
 import events from "../../utils/events"
 import location from "../../utils/location"
+import { clientSay } from "../../utils/consts"
 
 let announced = false
 let numerator = 0
@@ -45,7 +46,7 @@ register("tick", () => {
 
         if (numerator / denominator === 0) continue
         if (numerator / denominator * 100 >= settings.nearSpawnAnnouncement && !announced) {
-            ChatLib.command(`pc Spawning soon (${numerator}/${denominator})`)
+            clientSay(`Spawning soon (${numerator}/${denominator})`, true)
             announced = true
         }
     }
@@ -54,13 +55,13 @@ register("tick", () => {
 events.addPartyChatListener(
     () => {
         if (!location.inStillgore())
-            ChatLib.command("pc Not in rift")
+            clientSay("Not in rift", true)
 
         else if (!announced && numerator === 0 && denominator === 1)
-            ChatLib.command("pc Boss already spawned")
+            clientSay("Boss already spawned", true)
 
         else
-            ChatLib.command(`pc Kills: ${numerator}/${denominator} (${Math.round((numerator / denominator) * 100)}%)`)
+            clientSay(`Kills: ${numerator}/${denominator} (${Math.round((numerator / denominator) * 100)}%)`, true)
     },
     (cmd) => cmd === "kills" && settings.pcKills
 )

@@ -1,7 +1,7 @@
 import settings from "../../config/settings";
 import Events from "../../utils/events";
 import { ExpiringArray } from "../../utils/misc";
-import { Packets } from "../../utils/consts";
+import { clientSay, Packets } from "../../utils/consts";
 
 const WAIT = 5000
 const packets = new ExpiringArray(200, WAIT)
@@ -19,9 +19,9 @@ Events.addPartyChatListener(
 
         // if less than 10s, warn
         if (diff < WAIT)
-            ChatLib.command(`pc TPS still loading, ${((WAIT - diff) / 1000).toFixed(1)}s remaining`)
+            clientSay(`TPS still loading, ${((WAIT - diff) / 1000).toFixed(1)}s remaining`)
         else
-            ChatLib.command(`pc TPS: ${(packets.size() / (WAIT / 1000)).toFixed(1)}`)
+            clientSay(`TPS: ${(packets.size() / (WAIT / 1000)).toFixed(1)}`)
     },
     (cmd) => cmd === "tps" && settings.pcTps
 )

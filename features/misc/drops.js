@@ -1,4 +1,5 @@
 import settings from "../../config/settings"
+import { clientChat } from "../../utils/consts"
 import location from "../../utils/location"
 
 const ToolKit = Java.type("java.awt.Toolkit")
@@ -21,7 +22,7 @@ register("chat", (rarity, drop, mf, event) => {
         const selection = new StringSelection(ChatLib.removeFormatting(message) + (rarity === "CRAZY" ? "[Lootshare]" : ""))
         const clipboard = ToolKit.getDefaultToolkit().getSystemClipboard()
         clipboard.setContents(selection, null)
-        ChatLib.chat("§8Copied to clipboard!")
+        clientChat("§8Copied to clipboard!")
     }
 
     if (settings.rngDropTitle) {

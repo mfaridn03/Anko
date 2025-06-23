@@ -12,3 +12,17 @@ export class ForgeEvents {
     static LivingUpdateEvent = net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent
     static EntityJoinWorldEvent = net.minecraftforge.event.entity.EntityJoinWorldEvent
 }
+
+// client chat stuff
+const chatPrefix = "§d§lAK §r§5»§7 "
+const sayPrefix = "AK » "
+export const clientChat = (msg) => {
+    ChatLib.chat(`${chatPrefix}${msg}`)
+}
+export const clientSay = (msg, party = true) => {
+    if (party) ChatLib.command(`pc ${sayPrefix}${msg}`)
+    else ChatLib.say(`${sayPrefix}${msg}`)
+}
+export const clientDebug = (msg) => {
+    ChatLib.chat(`§d§lAK §r§8[DEBUG] §5»§7§o ${msg}`)
+}

@@ -1,6 +1,6 @@
 import settings from "../config/settings"
 import modSettings from "../config/settings"
-import { ForgeEvents, Packets } from "./consts"
+import { clientDebug, clientSay, ForgeEvents, Packets } from "./consts"
 import { getScoreboard, removeUnicode } from "./interface"
 import LocationUtils from "./location"
 import { registerWhen } from "./trigger"
@@ -45,7 +45,7 @@ export default new class Vampire {
                     this.startTime = Date.now()
 
                     if (modSettings.announceSpawn) {
-                        ChatLib.command(`pc Boss Spawned @ x: ${Math.round(this.spawnedByStand.getX())}, y: ${Math.round(this.spawnedByStand.getY())}, z: ${Math.round(this.spawnedByStand.getZ())}`)
+                        clientSay(`Boss Spawned @ x: ${Math.round(this.spawnedByStand.getX())}, y: ${Math.round(this.spawnedByStand.getY())}, z: ${Math.round(this.spawnedByStand.getZ())}`)
                     }
                 }
             })
@@ -57,11 +57,11 @@ export default new class Vampire {
 
                 switch (modSettings.announceDeath) {
                     case 1: // Time
-                        ChatLib.command(`pc Boss took ${time.toFixed(2)}s to kill`)
+                        clientSay(`Boss took ${time.toFixed(2)}s to kill`)
                         break
 
                     case 2: // Time + Ticks
-                        ChatLib.command(`pc Boss took ${time.toFixed(2)}s (${this.ticks} ticks) to kill`)
+                        clientSay(`Boss took ${time.toFixed(2)}s (${this.ticks} ticks) to kill`)
                         break
 
                     default:
@@ -87,7 +87,7 @@ export default new class Vampire {
                     this.mania++
 
                     if (modSettings.announceMania)
-                        ChatLib.command(`pc Mania Phase ${this.mania} started`)
+                        clientSay(`Mania Phase ${this.mania} started`)
 
                     setTimeout(() => {
                         this.maniaCd = false
@@ -133,7 +133,7 @@ export default new class Vampire {
     }
 
     reset() {
-        if (settings.debug) ChatLib.chat("§8debug:§r reset")
+        if (settings.debug) clientDebug("reset")
         this.timerStand = null
         this.startTime = null
         this.spawnedByStand = null
