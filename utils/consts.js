@@ -14,8 +14,8 @@ export class ForgeEvents {
 }
 
 // client chat stuff
-const chatPrefix = "§d§lAK §r§5»§7 "
-const sayPrefix = "AK » "
+const chatPrefix = "§d§lA §r§5»§7 "
+const sayPrefix = "A » "
 export const clientChat = (msg) => {
     ChatLib.chat(`${chatPrefix}${msg}`)
 }
@@ -24,5 +24,5 @@ export const clientSay = (msg, party = true) => {
     else ChatLib.say(`${sayPrefix}${msg}`)
 }
 export const clientDebug = (msg) => {
-    ChatLib.chat(`§d§lAK §r§8[DEBUG] §5»§7§o ${msg}`)
+    ChatLib.chat(`§d§lA §r§8[DEBUG] §5»§7§o ${msg}`)
 }

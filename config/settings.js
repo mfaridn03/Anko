@@ -187,10 +187,19 @@ class Settings {
         name: "Boss Death",
         description: "Announce boss time to kill",
         category: "Party",
-        subcategory: "Announcement",
+        subcategory: "On Kill",
         options: ["Off", "Time", "Time + Ticks"]
     })
     announceDeath = 0;
+
+    @SelectorProperty({
+        name: "Announce Type",
+        description: "Where to announce boss kill",
+        category: "Party",
+        subcategory: "On Kill",
+        options: ["Party Chat", "Client Message"]
+    })
+    announceType = 0;
 
     // 63%-94%
     @SliderProperty({

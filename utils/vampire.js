@@ -1,6 +1,6 @@
 import settings from "../config/settings"
 import modSettings from "../config/settings"
-import { clientDebug, clientSay, ForgeEvents, Packets } from "./consts"
+import { clientChat, clientDebug, clientSay, ForgeEvents, Packets } from "./consts"
 import { getScoreboard, removeUnicode } from "./interface"
 import LocationUtils from "./location"
 import { registerWhen } from "./trigger"
@@ -57,11 +57,11 @@ export default new class Vampire {
 
                 switch (modSettings.announceDeath) {
                     case 1: // Time
-                        clientSay(`Boss took ${time.toFixed(2)}s to kill`)
+                        modSettings.announceType == 0 ? clientSay(`Boss took ${time.toFixed(2)}s to kill`) : clientChat(`Boss took ${time.toFixed(2)}s to kill`)
                         break
 
                     case 2: // Time + Ticks
-                        clientSay(`Boss took ${time.toFixed(2)}s (${this.ticks} ticks) to kill`)
+                        modSettings.announceType == 0 ? clientSay(`Boss took ${time.toFixed(2)}s (${this.ticks} ticks) to kill`) : clientChat(`Boss took ${time.toFixed(2)}s (${this.ticks} ticks) to kill`)
                         break
 
                     default:
