@@ -22,6 +22,7 @@ class Settings {
         this.addDependency("boss", "Party Commands");
         this.addDependency("kills", "Party Commands");
         this.addDependency("help", "Party Commands");
+        this.addDependency("tps", "Party Commands");
 
         this.addDependency("Count Threshold", "Crafting Reminder")
     }
